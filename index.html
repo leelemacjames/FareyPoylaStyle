@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What You Want vs What It Is: A Mathematical Journey</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2em;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+        
+        .section {
+            margin: 30px 0;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border-left: 5px solid #667eea;
+        }
+        
+        .problem {
+            font-size: 1.3em;
+            margin: 15px 0;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            margin: 10px 5px;
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        input[type="number"], select {
+            padding: 10px;
+            font-size: 1.2em;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            width: 100px;
+            text-align: center;
+            margin: 0 10px;
+        }
+        
+        select {
+            width: 150px;
+            cursor: pointer;
+        }
+        
+        .reveal-box {
+            background: #e8f4f8;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+            border: 2px solid #4a90e2;
+        }
+        
+        .explanation {
+            background: #fff3cd;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+            border-left: 4px solid #ffc107;
+        }
+        
+        .visualization {
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        canvas {
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            background: white;
+            max-width: 100%;
+        }
+        
+        .formula {
+            font-size: 1.2em;
+            font-family: 'Courier New', monospace;
+            padding: 10px;
+            margin: 10px 0;
+            background: white;
+            border-radius: 5px;
+            text-align: center;
+        }
+        
+        .interactive-input {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .feedback {
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        .correct {
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #28a745;
+        }
+        
+        .incorrect {
+            background: #f8d7da;
+            color: #721c24;
+            border: 2px solid #dc3545;
+        }
+        
+        .key-insight {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            font-size: 1.1em;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        
+        th {
+            background: #667eea;
+            color: white;
+        }
+        
+        .link-box {
+            background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .link-box a {
+            color: #1a1a1a;
+            font-weight: bold;
+            font-size: 1.1em;
+            text-decoration: none;
+            display: inline-block;
+            padding: 12px 24px;
+            background: white;
+            border-radius: 8px;
+            margin: 10px 0;
+            transition: all 0.3s;
+        }
+        
+        .link-box a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .circle-info {
+            background: #f0f8ff;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+            line-height: 1.8;
+        }
+        
+        .pythag-result {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 12px;
+            font-size: 1.1em;
+            font-weight: bold;
+            text-align: center;
+            color: #2d3436;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>What You Want vs What It Is</h1>
+        <p class="subtitle">A journey through mathematical notation and unexpected consequences</p>
+        
+        <!-- Section 1: The Pólya Problem -->
+        <div class="section">
+            <h2>🧩 The Mystery Operation</h2>
+            <p>Let's start with a puzzle. We have a new operation called ⊞ (square-plus). Look at these examples:</p>
+            
+            <div class="problem">3 ⊞ 4 = 25</div>
+            <div class="problem">3 ⊞ 5 = 34</div>
+            <div class="problem">3 ⊞ 6 = 45</div>
+            
+            <div class="interactive-input">
+                <p><strong>What is 3 ⊞ 12 = ?</strong></p>
+                <input type="number" id="answer1" placeholder="?">
+                <button onclick="checkAnswer1()">Check Answer</button>
+            </div>
+            
+            <div id="feedback1" class="feedback hidden"></div>
+            
+            <button onclick="showHint1()" id="hintBtn1">💡 Need a hint?</button>
+            <div id="hint1" class="hidden reveal-box">
+                <p><strong>Hint:</strong> Look at the differences between consecutive results:</p>
+                <p>25 → 34 = difference of 9</p>
+                <p>34 → 45 = difference of 11</p>
+                <p>What pattern do you see?</p>
+            </div>
+            
+            <button onclick="reveal1()" id="revealBtn1" class="hidden">🔍 Show me the pattern</button>
+            
+            <div id="reveal1" class="hidden reveal-box">
+                <h3>Method 1: Quadratic Sequence</h3>
+                <table>
+                    <tr>
+                        <th>n</th>
+                        <th>3 ⊞ n</th>
+                        <th>1st difference</th>
+                        <th>2nd difference</th>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>25</td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>34</td>
+                        <td>9</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>45</td>
+                        <td>11</td>
+                        <td>2</td>
+                    </tr>
+                </table>
+                <p>The second difference is constant! This suggests a quadratic pattern.</p>
+                
+                <h3>Method 2: Identify the Operation</h3>
+                <p>What if ⊞ means something specific?</p>
+                <p class="formula">3 ⊞ 4 = 3² + 4² = 9 + 16 = 25 ✓</p>
+                <p class="formula">3 ⊞ 5 = 3² + 5² = 9 + 25 = 34 ✓</p>
+                
+                <div class="key-insight">
+                    <strong>Discovery:</strong> a ⊞ b = a² + b²
+                    <br>Therefore: 3 ⊞ 12 = 9 + 144 = <strong>153</strong>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Section 2: Another Operation -->
+        <div id="section2" class="section hidden">
+            <h2>💎 A New Operation</h2>
+            <p>Now let's try another operation: ◇ (diamond)</p>
+            
+            <div class="problem">3 ◇ 4 = 49</div>
+            <div class="problem">3 ◇ 5 = 64</div>
+            
+            <div class="interactive-input">
+                <p><strong>Can you figure out what 3 ◇ 6 equals?</strong></p>
+                <input type="number" id="answer2" placeholder="?">
+                <button onclick="checkAnswer2()">Check Answer</button>
+            </div>
+            
+            <div id="feedback2" class="feedback hidden"></div>
+            
+            <button onclick="reveal2()" id="revealBtn2" class="hidden">Show the pattern</button>
+            
+            <div id="reveal2" class="hidden reveal-box">
+                <p>Let's analyze:</p>
+                <p class="formula">3 ◇ 4 = 49 = 7² = (3 + 4)²</p>
+                <p class="formula">3 ◇ 5 = 64 = 8² = (3 + 5)²</p>
+                
+                <div class="key-insight">
+                    <strong>Discovery:</strong> a ◇ b = (a + b)²
+                    <br>Therefore: 3 ◇ 6 = (3 + 6)² = 9² = <strong>81</strong>
+                </div>
+                
+                <p style="margin-top: 15px;"><em>Key lesson: We can define operations to be whatever we want! The notation doesn't determine the operation—we do.</em></p>
+            </div>
+        </div>
+        
+        <!-- Section 3: What Do You Want It To Be? -->
+        <div id="section3" class="section hidden">
+            <h2>🤔 But What Do YOU Want?</h2>
+            <p>Here's where it gets interesting. What if we ask a younger student:</p>
+            
+            <div class="problem">1/3 ⊕ 1/4 = ?</div>
+            
+            <div class="interactive-input">
+                <p><strong>What do YOU think it should be?</strong></p>
+                <input type="number" id="wantNum" placeholder="numerator" style="width: 80px">
+                /
+                <input type="number" id="wantDen" placeholder="denominator" style="width: 80px">
+                <button onclick="revealWant()">Submit your answer</button>
+            </div>
+            
+            <div id="wantReveal" class="hidden">
+                <p>Many young learners instinctively say:</p>
+                <div class="formula">1/3 ⊕ 1/4 = 2/7</div>
+                
+                <p><strong>They add the numerators and add the denominators!</strong></p>
+                <p>Every teacher says: "That's wrong! You can't do that!"</p>
+                
+                <div class="key-insight">
+                    But what if we said: "Okay, let's DEFINE ⊕ that way. What happens?"
+                </div>
+                
+                <button onclick="showSection4()">Let's find out...</button>
+            </div>
+        </div>
+        
+        <!-- Section 4: The Mediant Operation -->
+        <div id="section4" class="section hidden">
+            <h2>➕ The Mediant Operation</h2>
+            <p>Let's officially define our new operation:</p>
+            
+            <div class="formula">
+                a/b ⊕ c/d = (a+c)/(b+d)
+            </div>
+            
+            <p>This is called the <strong>mediant</strong> or <strong>Farey addition</strong>.</p>
+            
+            <div class="explanation">
+                <strong>Example:</strong><br>
+                1/3 ⊕ 1/4 = (1+1)/(3+4) = 2/7<br>
+                1/2 ⊕ 1/3 = (1+1)/(2+3) = 2/5<br>
+                2/5 ⊕ 1/3 = (2+1)/(5+3) = 3/8
+            </div>
+            
+            <div class="interactive-input">
+                <p><strong>Try it yourself:</strong> 1/4 ⊕ 1/5 = ?</p>
+                <input type="number" id="medNum" placeholder="numerator" style="width: 80px">
+                /
+                <input type="number" id="medDen" placeholder="denominator" style="width: 80px">
+                <button onclick="checkMediant()">Check</button>
+            </div>
+            
+            <div id="feedbackMediant" class="feedback hidden"></div>
+            
+            <button onclick="showSection5()" id="toSection5" class="hidden">See what this creates...</button>
+        </div>
+        
+        <!-- Section 5: Farey Sequence -->
+        <div id="section5" class="section hidden">
+            <h2>🔢 The Farey Sequence</h2>
+            <p>If we start with 0/1 and 1/1 and keep applying the mediant operation between consecutive fractions, we build something beautiful:</p>
+            
+            <div class="reveal-box">
+                <p><strong>Level 0:</strong> 0/1, 1/1</p>
+                <p><strong>Level 1:</strong> 0/1, <span style="color: #e74c3c;">1/2</span>, 1/1</p>
+                <p><strong>Level 2:</strong> 0/1, <span style="color: #e74c3c;">1/3</span>, 1/2, <span style="color: #e74c3c;">2/3</span>, 1/1</p>
+                <p><strong>Level 3:</strong> 0/1, <span style="color: #e74c3c;">1/4</span>, 1/3, <span style="color: #e74c3c;">2/5</span>, 1/2, <span style="color: #e74c3c;">3/5</span>, 2/3, <span style="color: #e74c3c;">3/4</span>, 1/1</p>
+            </div>
+            
+            <p>This creates the <strong>Farey sequence</strong>—all fractions between 0 and 1 in simplest form, ordered by size!</p>
+            
+            <button onclick="visualizeFarey()">📊 Visualize on Number Line</button>
+            
+            <div id="fareyViz" class="hidden visualization">
+                <canvas id="numberLine" width="800" height="150"></canvas>
+            </div>
+            
+            <div id="fareyLink" class="hidden link-box">
+                <p><strong>🎨 Interactive Farey Circle Visualization</strong></p>
+                <p>Explore the beautiful circular pattern created by the Farey sequence:</p>
+                <a href="https://farey-diagram-5emr2k0io-leemacjames-projects.vercel.app/" target="_blank">
+                    Open Interactive Farey Diagram →
+                </a>
+                <p style="margin-top: 10px; font-size: 0.9em;">This shows each fraction as a point on a circle, revealing hidden patterns!</p>
+            </div>
+            
+            <button onclick="showSection6()" id="toSection6" class="hidden">But wait, there's more...</button>
+        </div>
+        
+        <!-- Section 6: Pythagorean Triples -->
+        <div id="section6" class="section hidden">
+            <h2>🎯 Pythagorean Triples</h2>
+            
+            <p>Remember our ⊞ operation from the beginning?</p>
+            <div class="formula">3 ⊞ 4 = 3² + 4² = 25 = 5²</div>
+            <div class="formula">5 ⊞ 12 = 5² + 12² = 169 = 13²</div>
+            
+            <p>These are examples of <strong>Pythagorean triples</strong>—sets of three whole numbers (a, b, c) where:</p>
+            <div class="formula">a² + b² = c²</div>
+            
+            <div class="explanation">
+                <p><strong>Famous examples:</strong></p>
+                <p>3, 4, 5 (because 9 + 16 = 25)</p>
+                <p>5, 12, 13 (because 25 + 144 = 169)</p>
+                <p>8, 15, 17 (because 64 + 225 = 289)</p>
+            </div>
+            
+            <div class="key-insight">
+                Here's the amazing connection:<br><br>
+                <strong>The Farey sequence helps us understand and generate Pythagorean triples!</strong>
+            </div>
+            
+            <h3 style="margin-top: 20px;">The Unit Circle Connection</h3>
+            <p>Now here's the geometric magic. We'll draw a line from the point (-1, 0) with slope m. Watch what happens to the OTHER intersection point with the unit circle:</p>
+            
+            <div class="interactive-input">
+                <label for="slopeSelect">Choose a slope m: </label>
+                <select id="slopeSelect" onchange="drawCircleIntersection()">
+                    <option value="0,1">m = 0/1 = 0</option>
+                    <option value="1,2">m = 1/2</option>
+                    <option value="1,3">m = 1/3</option>
+                    <option value="2,3">m = 2/3</option>
+                    <option value="1,4">m = 1/4</option>
+                    <option value="3,4">m = 3/4</option>
+                    <option value="1,5">m = 1/5</option>
+                    <option value="2,5">m = 2/5</option>
+                    <option value="3,5">m = 3/5</option>
+                    <option value="4,5">m = 4/5</option>
+                </select>
+            </div>
+            
+            <div class="visualization">
+                <canvas id="circleCanvas" width="600" height="600"></canvas>
+            </div>
+            
+            <div class="circle-info" id="circleInfo"></div>
+            
+            <div class="pythag-result" id="pythagResult"></div>
+            
+            <div class="reveal-box">
+                <p><strong>The Amazing Pattern:</strong></p>
+                <p>When you choose a slope m = p/q (in lowest terms) and draw the line through (-1, 0):</p>
+                <ol style="text-align: left; margin-left: 30px; line-height: 1.8;">
+                    <li>The line ALWAYS passes through (-1, 0)</li>
+                    <li>The OTHER intersection point has coordinates that are FRACTIONS</li>
+                    <li>These coordinates form a <strong>Farey fraction pair</strong>: (x, y) where both x and y are rational</li>
+                    <li>In homogeneous coordinates [x : y : 1], this becomes [p²-q² : 2pq : p²+q²]</li>
+                    <li>These three numbers (|p²-q²|, 2pq, p²+q²) form a <strong>Pythagorean triple!</strong></li>
+                </ol>
+                <p style="margin-top: 15px;"><strong>This is the bridge: "wrong" fraction addition → rational points on circles → Pythagorean triples!</strong></p>
+            </div>
+            
+            <button onclick="showSection7()">Compare with "proper" addition</button>
+        </div>
+        
+        <!-- Section 7: Proper Addition -->
+        <div id="section7" class="section hidden">
+            <h2>📚 The "Proper" Way</h2>
+            <p>Now let's remember how we're "supposed" to add fractions:</p>
+            
+            <div class="formula">
+                1/3 + 1/4 = ?
+            </div>
+            
+            <div class="explanation">
+                <p><strong>Step 1:</strong> Find the Least Common Multiple (LCM)</p>
+                <p>LCM(3, 4) = 12</p>
+                
+                <p><strong>Step 2:</strong> Convert to common denominator</p>
+                <p>1/3 = 4/12</p>
+                <p>1/4 = 3/12</p>
+                
+                <p><strong>Step 3:</strong> Add numerators</p>
+                <p>4/12 + 3/12 = 7/12</p>
+            </div>
+            
+            <div class="formula">
+                General formula: a/b + c/d = (ad + bc)/(bd)
+            </div>
+            
+            <div class="interactive-input">
+                <p><strong>Practice:</strong> Calculate 1/3 + 1/4 the proper way</p>
+                <input type="number" id="properNum" placeholder="numerator" style="width: 80px">
+                /
+                <input type="number" id="properDen" placeholder="denominator" style="width: 80px">
+                <button onclick="checkProper()">Check</button>
+            </div>
+            
+            <div id="feedbackProper" class="feedback hidden"></div>
+            
+            <button onclick="showSection8()" id="toSection8" class="hidden">See the comparison</button>
+        </div>
+        
+        <!-- Section 8: The Big Comparison -->
+        <div id="section8" class="section hidden">
+            <h2>⚖️ Two Different Operations</h2>
+            
+            <table>
+                <tr>
+                    <th>Operation</th>
+                    <th>Result of 1/3 + 1/4</th>
+                    <th>What it means</th>
+                    <th>Where it's useful</th>
+                </tr>
+                <tr>
+                    <td><strong>Mediant (⊕)</strong></td>
+                    <td>2/7 ≈ 0.286</td>
+                    <td>The fraction "between" them</td>
+                    <td>Farey sequences, Pythagorean triples, continued fractions, approximation theory</td>
+                </tr>
+                <tr>
+                    <td><strong>Standard (+)</strong></td>
+                    <td>7/12 ≈ 0.583</td>
+                    <td>Actual addition</td>
+                    <td>Combining quantities, arithmetic, algebra</td>
+                </tr>
+            </table>
+            
+            <div class="key-insight">
+                <strong>The Big Lesson:</strong>
+                <ul style="text-align: left; margin-left: 40px; margin-top: 10px;">
+                    <li style="margin: 10px 0;">What you WANT something to be isn't necessarily what it IS in standard mathematics</li>
+                    <li style="margin: 10px 0;">But defining operations differently can lead to beautiful new mathematics!</li>
+                    <li style="margin: 10px 0;">The "wrong" way of adding fractions is actually RIGHT for different purposes</li>
+                    <li style="margin: 10px 0;">Mathematical notation is a choice—we define what operations mean</li>
+                    <li style="margin: 10px 0;">Understanding WHY we have conventions helps us know when to break them</li>
+                </ul>
+            </div>
+            
+            <div class="explanation">
+                <p><strong>Skills Reinforced:</strong></p>
+                <ul style="text-align: left; margin-left: 20px;">
+                    <li>Pattern recognition (sequences, differences)</li>
+                    <li>Operations with fractions (numerators, denominators)</li>
+                    <li>LCM and common denominators</li>
+                    <li>Coordinate geometry and circle equations</li>
+                    <li>Pythagorean theorem and triples</li>
+                    <li>Visualization (number lines, circles)</li>
+                    <li>Mathematical creativity and exploration</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function checkAnswer1() {
+            const answer = parseInt(document.getElementById('answer1').value);
+            const feedback = document.getElementById('feedback1');
+            feedback.classList.remove('hidden');
+            
+            if (answer === 153) {
+                feedback.textContent = '✓ Correct! But how did you get there?';
+                feedback.className = 'feedback correct';
+                document.getElementById('hintBtn1').classList.add('hidden');
+                document.getElementById('revealBtn1').classList.remove('hidden');
+            } else {
+                feedback.textContent = '✗ Not quite. Try looking for a pattern!';
+                feedback.className = 'feedback incorrect';
+            }
+        }
+        
+        function showHint1() {
+            document.getElementById('hint1').classList.remove('hidden');
+            document.getElementById('hintBtn1').disabled = true;
+        }
+        
+        function reveal1() {
+            document.getElementById('reveal1').classList.remove('hidden');
+            document.getElementById('revealBtn1').disabled = true;
+            setTimeout(() => {
+                document.getElementById('section2').classList.remove('hidden');
+                document.getElementById('section2').scrollIntoView({ behavior: 'smooth' });
+            }, 500);
+        }
+        
+        function checkAnswer2() {
+            const answer = parseInt(document.getElementById('answer2').value);
+            const feedback = document.getElementById('feedback2');
+            feedback.classList.remove('hidden');
+            
+            if (answer === 81) {
+                feedback.textContent = '✓ Perfect! 3 ◇ 6 = (3+6)² = 81';
+                feedback.className = 'feedback correct';
+                document.getElementById('revealBtn2').classList.remove('hidden');
+            } else {
+                feedback.textContent = '✗ Hint: What operation on 3 and 4 gives 49?';
+                feedback.className = 'feedback incorrect';
+            }
+        }
+        
+        function reveal2() {
+            document.getElementById('reveal2').classList.remove('hidden');
+            setTimeout(() => {
+                document.getElementById('section3').classList.remove('hidden');
+                document.getElementById('section3').scrollIntoView({ behavior: 'smooth' });
+            }, 500);
+        }
+        
+        function revealWant() {
+            document.getElementById('wantReveal').classList.remove('hidden');
+        }
+        
+        function showSection4() {
+            document.getElementById('section4').classList.remove('hidden');
+            document.getElementById('section4').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function checkMediant() {
+            const num = parseInt(document.getElementById('medNum').value);
+            const den = parseInt(document.getElementById('medDen').value);
+            const feedback = document.getElementById('feedbackMediant');
+            feedback.classList.remove('hidden');
+            
+            if (num === 2 && den === 9) {
+                feedback.textContent = '✓ Correct! 1/4 ⊕ 1/5 = (1+1)/(4+5) = 2/9';
+                feedback.className = 'feedback correct';
+                document.getElementById('toSection5').classList.remove('hidden');
+            } else {
+                feedback.textContent = '✗ Remember: add numerators, add denominators!';
+                feedback.className = 'feedback incorrect';
+            }
+        }
+        
+        function showSection5() {
+            document.getElementById('section5').classList.remove('hidden');
+            document.getElementById('section5').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function visualizeFarey() {
+            const canvas = document.getElementById('numberLine');
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+            
+            ctx.clearRect(0, 0, width, height);
+            
+            // Draw number line
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(50, height/2);
+            ctx.lineTo(width - 50, height/2);
+            ctx.stroke();
+            
+            // Draw ticks
+            ctx.fillStyle = '#333';
+            ctx.font = '12px Arial';
+            ctx.textAlign = 'center';
+            
+            // Generate Farey sequence F_4
+            const fractions = [
+                [0,1], [1,4], [1,3], [2,5], [1,2], [3,5], [2,3], [3,4], [1,1]
+            ];
+            
+            fractions.forEach(([n, d]) => {
+                const x = 50 + (width - 100) * (n/d);
+                ctx.beginPath();
+                ctx.moveTo(x, height/2 - 10);
+                ctx.lineTo(x, height/2 + 10);
+                ctx.stroke();
+                
+                ctx.fillText(`${n}/${d}`, x, height/2 + 30);
+                
+                // Draw point
+                ctx.beginPath();
+                ctx.arc(x, height/2, 4, 0, 2 * Math.PI);
+                ctx.fillStyle = '#667eea';
+                ctx.fill();
+                ctx.fillStyle = '#333';
+            });
+            
+            document.getElementById('fareyViz').classList.remove('hidden');
+            document.getElementById('fareyLink').classList.remove('hidden');
+            document.getElementById('toSection6').classList.remove('hidden');
+        }
+        
+        function showSection6() {
+            document.getElementById('section6').classList.remove('hidden');
+            document.getElementById('section6').scrollIntoView({ behavior: 'smooth' });
+            // Draw initial circle
+            drawCircleIntersection();
+        }
+        
+        function drawCircleIntersection() {
+            const canvas = document.getElementById('circleCanvas');
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const radius = 250;
+            const scale = radius;
+            
+            ctx.clearRect(0, 0, width, height);
+            
+            // Get selected slope
+            const select = document.getElementById('slopeSelect');
+            const [p, q] = select.value.split(',').map(Number);
+            const m = p / q;
+            
+            // Draw grid
+            ctx.strokeStyle = '#f0f0f0';
+            ctx.lineWidth = 1;
+            for (let i = -1; i <= 1; i += 0.25) {
+                if (i === 0) continue;
+                // Vertical lines
+                ctx.beginPath();
+                ctx.moveTo(centerX + i * scale, 0);
+                ctx.lineTo(centerX + i * scale, height);
+                ctx.stroke();
+                // Horizontal lines
+                ctx.beginPath();
+                ctx.moveTo(0, centerY - i * scale);
+                ctx.lineTo(width, centerY - i * scale);
+                ctx.stroke();
+            }
+            
+            // Draw axes
+            ctx.strokeStyle = '#999';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(0, centerY);
+            ctx.lineTo(width, centerY);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(centerX, 0);
+            ctx.lineTo(centerX, height);
+            ctx.stroke();
+            
+            // Draw unit circle
+            ctx.strokeStyle = '#e74c3c';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+            ctx.stroke();
+            
+            // Calculate intersection points
+            // Line passes through (-1, 0) with slope m
+            // Parametric: (x, y) = (-1, 0) + t(1, m)
+            // So: x = -1 + t, y = mt
+            // Substitute into x² + y² = 1:
+            // (-1 + t)² + (mt)² = 1
+            // 1 - 2t + t² + m²t² = 1
+            // t²(1 + m²) - 2t = 0
+            // t(t(1 + m²) - 2) = 0
+            // So t = 0 (giving (-1,0)) or t = 2/(1 + m²)
+            
+            const t = 2 / (1 + m * m);
+            const x_other = -1 + t;
+            const y_other = m * t;
+            
+            // Calculate as fractions
+            const p2 = p * p;
+            const q2 = q * q;
+            const denom = p2 + q2;
+            
+            // x = (q² - p²)/(p² + q²)
+            const x_num = q2 - p2;
+            const x_den = denom;
+            
+            // y = 2pq/(p² + q²)
+            const y_num = 2 * p * q;
+            const y_den = denom;
+            
+            // Simplify fractions
+            function gcd(a, b) {
+                a = Math.abs(a);
+                b = Math.abs(b);
+                while (b) [a, b] = [b, a % b];
+                return a;
+            }
+            
+            const x_gcd = gcd(Math.abs(x_num), x_den);
+            const y_gcd = gcd(y_num, y_den);
+            
+            const x_num_simple = x_num / x_gcd;
+            const x_den_simple = x_den / x_gcd;
+            const y_num_simple = y_num / y_gcd;
+            const y_den_simple = y_den / y_gcd;
+            
+            // Draw line (extend beyond circle)
+            ctx.strokeStyle = '#3498db';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([5, 5]);
+            ctx.beginPath();
+            const lineExtend = 1.4;
+            const x_start = -1 - lineExtend;
+            const y_start = m * (x_start + 1);
+            const x_end = x_other + lineExtend;
+            const y_end = m * (x_end + 1);
+            ctx.moveTo(centerX + x_start * scale, centerY - y_start * scale);
+            ctx.lineTo(centerX + x_end * scale, centerY - y_end * scale);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            
+            // Mark point (-1, 0)
+            ctx.fillStyle = '#2ecc71';
+            ctx.beginPath();
+            ctx.arc(centerX - scale, centerY, 8, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.strokeStyle = '#27ae60';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            // Label for (-1, 0)
+            ctx.fillStyle = '#000';
+            ctx.font = 'bold 16px Arial';
+            ctx.textAlign = 'right';
+            ctx.fillText('(-1, 0)', centerX - scale - 15, centerY - 15);
+            
+            // Mark other intersection point
+            ctx.fillStyle = '#e74c3c';
+            ctx.beginPath();
+            ctx.arc(centerX + x_other * scale, centerY - y_other * scale, 10, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.strokeStyle = '#c0392b';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            // Label for Farey fraction point
+            ctx.fillStyle = '#000';
+            ctx.font = 'bold 14px Arial';
+            ctx.textAlign = 'left';
+            const labelX = centerX + x_other * scale + 15;
+            const labelY = centerY - y_other * scale - 10;
+            ctx.fillText(`Farey fraction:`, labelX, labelY);
+            ctx.fillText(`(${x_num_simple}/${x_den_simple}, ${y_num_simple}/${y_den_simple})`, labelX, labelY + 18);
+            
+            // Display information
+            const info = document.getElementById('circleInfo');
+            info.innerHTML = `
+                <strong>Slope chosen:</strong> m = ${p}/${q}<br>
+                <strong>Line equation:</strong> passes through (-1, 0) with slope ${p}/${q}<br>
+                <strong>Parametric form:</strong> (x, y) = (-1, 0) + t(1, ${p}/${q})<br><br>
+                <strong>Intersection point (-1, 0):</strong> [Always where line meets circle]<br>
+                <strong>OTHER intersection (Farey fraction):</strong> 
+                (<span style="color: #e74c3c; font-weight: bold;">${x_num_simple}/${x_den_simple}, ${y_num_simple}/${y_den_simple}</span>)<br><br>
+                <strong>As decimals:</strong> (${x_other.toFixed(5)}, ${y_other.toFixed(5)})
+            `;
+            
+            // Calculate Pythagorean triple
+            const a_val = Math.abs(p2 - q2);
+            const b_val = 2 * p * q;
+            const c_val = p2 + q2;
+            
+            // Check if it forms a Pythagorean triple
+            const check = a_val * a_val + b_val * b_val;
+            const c_squared = c_val * c_val;
+            const isPythag = (check === c_squared);
+            
+            const pythagDisplay = document.getElementById('pythagResult');
+            pythagDisplay.innerHTML = `
+                <strong>🎯 Pythagorean Triple Generated!</strong><br><br>
+                From slope m = ${p}/${q}, we get:<br><br>
+                <strong>a = |p² - q²| = |${p}² - ${q}²| = ${a_val}</strong><br>
+                <strong>b = 2pq = 2(${p})(${q}) = ${b_val}</strong><br>
+                <strong>c = p² + q² = ${p}² + ${q}² = ${c_val}</strong><br><br>
+                <strong>Homogeneous coordinates:</strong> [${a_val === 0 ? (q2 - p2) : (p2 - q2)} : ${b_val} : ${c_val}]<br><br>
+                ✓ Check: ${a_val}² + ${b_val}² = ${a_val * a_val} + ${b_val * b_val} = ${check}<br>
+                ✓ And: ${c_val}² = ${c_squared}<br><br>
+                ${isPythag ? '<strong style="color: #27ae60;">✓✓✓ This IS a Pythagorean triple!</strong>' : '(Scaled Pythagorean triple)'}
+            `;
+        }
+        
+        function showSection7() {
+            document.getElementById('section7').classList.remove('hidden');
+            document.getElementById('section7').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function checkProper() {
+            const num = parseInt(document.getElementById('properNum').value);
+            const den = parseInt(document.getElementById('properDen').value);
+            const feedback = document.getElementById('feedbackProper');
+            feedback.classList.remove('hidden');
+            
+            if (num === 7 && den === 12) {
+                feedback.textContent = '✓ Correct! 1/3 + 1/4 = 4/12 + 3/12 = 7/12';
+                feedback.className = 'feedback correct';
+                document.getElementById('toSection8').classList.remove('hidden');
+            } else {
+                feedback.textContent = '✗ Remember: LCM(3,4) = 12, so 1/3 = 4/12 and 1/4 = 3/12';
+                feedback.className = 'feedback incorrect';
+            }
+        }
+        
+        function showSection8() {
+            document.getElementById('section8').classList.remove('hidden');
+            document.getElementById('section8').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
